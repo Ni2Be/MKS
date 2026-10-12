@@ -37,6 +37,28 @@ namespace WOLF
         private GUIContent[] _destinationBiomeNames;
         private GUIStyle _labelStyle;
         private GUIStyle _listStyle;
+        private GUIContent _originContent;
+        private GUIContent _destinationContent;
+        private GUIContent _rawContent;
+        private GUIContent _refinedContent;
+        private GUIContent _assembledContent;
+        private GUIContent _lifeSupportContent;
+        private GUIContent _crewContent;
+        private GUIContent _resetContent;
+
+        /// <summary>
+        /// <c>true</c> while one of the depot dropdown lists is being displayed.
+        /// </summary>
+        public bool IsDropdownOpen
+        {
+            get
+            {
+                return (_originBodyDropdown != null && _originBodyDropdown.IsOpen)
+                    || (OriginBiomeDropdown != null && OriginBiomeDropdown.IsOpen)
+                    || (_destinationBodyDropdown != null && _destinationBodyDropdown.IsOpen)
+                    || (DestinationBiomeDropdown != null && DestinationBiomeDropdown.IsOpen);
+            }
+        }
 
         private ComboBox OriginBiomeDropdown
         {
@@ -182,6 +204,16 @@ namespace WOLF
             {
                 RESET_BUTTON_LABEL = resetButtonLabel;
             }
+
+            // Pair the localized labels with their tooltips
+            _originContent = new GUIContent($"<color=#FFD900>{ORIGIN_LABEL}</color>", WOLF_HelpText.FilterOriginTip);
+            _destinationContent = new GUIContent($"<color=#FFD900>{DESTINATION_LABEL}</color>", WOLF_HelpText.FilterDestinationTip);
+            _rawContent = new GUIContent(RAW_LABEL, WOLF_HelpText.FilterRawTip);
+            _refinedContent = new GUIContent(REFINED_LABEL, WOLF_HelpText.FilterRefinedTip);
+            _assembledContent = new GUIContent(ASSEMBLED_LABEL, WOLF_HelpText.FilterAssembledTip);
+            _lifeSupportContent = new GUIContent(LIFE_SUPPORT_LABEL, WOLF_HelpText.FilterLifeSupportTip);
+            _crewContent = new GUIContent(CREW_LABEL, WOLF_HelpText.FilterCrewTip);
+            _resetContent = new GUIContent(RESET_BUTTON_LABEL, WOLF_HelpText.FilterResetTip);
         }
 
         private void InitStyles()
@@ -396,7 +428,7 @@ namespace WOLF
             GUILayout.Label($"{HEADER_LABEL}", _labelStyle, GUILayout.Width(50));
 
             // Show origin depot dropdowns
-            GUILayout.Label($"<color=#FFD900>{ORIGIN_LABEL}</color>", _labelStyle, GUILayout.Width(65));
+            GUILayout.Label(_originContent, _labelStyle, GUILayout.Width(65));
             if (_originBodyDropdown != null)
             {
                 _originBodyDropdown.Show();
@@ -411,7 +443,7 @@ namespace WOLF
             // Show destination depot dropdowns
             if (showDestinationDepot)
             {
-                GUILayout.Label($"<color=#FFD900>{DESTINATION_LABEL}</color>", _labelStyle, GUILayout.Width(65));
+                GUILayout.Label(_destinationContent, _labelStyle, GUILayout.Width(65));
                 if (_destinationBodyDropdown != null)
                 {
                     _destinationBodyDropdown.Show();
@@ -429,15 +461,15 @@ namespace WOLF
 
             // Show resources
             GUILayout.Label($"<color=#FFD900>{RESOURCES_LABEL}</color>", _labelStyle, GUILayout.Width(70));
-            ShowRawMaterials = GUILayout.Toggle(ShowRawMaterials, RAW_LABEL, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
-            ShowRefinedMaterials = GUILayout.Toggle(ShowRefinedMaterials, REFINED_LABEL, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
-            ShowAssembledMaterials = GUILayout.Toggle(ShowAssembledMaterials, ASSEMBLED_LABEL, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
-            ShowLifeSupportMaterials = GUILayout.Toggle(ShowLifeSupportMaterials, LIFE_SUPPORT_LABEL, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
-            ShowCrew = GUILayout.Toggle(ShowCrew, CREW_LABEL, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
+            ShowRawMaterials = GUILayout.Toggle(ShowRawMaterials, _rawContent, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
+            ShowRefinedMaterials = GUILayout.Toggle(ShowRefinedMaterials, _refinedContent, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
+            ShowAssembledMaterials = GUILayout.Toggle(ShowAssembledMaterials, _assembledContent, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
+            ShowLifeSupportMaterials = GUILayout.Toggle(ShowLifeSupportMaterials, _lifeSupportContent, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
+            ShowCrew = GUILayout.Toggle(ShowCrew, _crewContent, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(20));
 
             // Show reset button
             GUILayout.Label($"<color=#FFD900>{RESET_HEADER_LABEL}</color>", _labelStyle, GUILayout.Width(100));
-            if (GUILayout.Button(RESET_BUTTON_LABEL, UIHelper.buttonStyle, GUILayout.Width(60), GUILayout.Height(20)))
+            if (GUILayout.Button(_resetContent, UIHelper.buttonStyle, GUILayout.Width(60), GUILayout.Height(20)))
             {
                 ResetFilters();
             }

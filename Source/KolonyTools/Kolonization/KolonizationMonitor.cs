@@ -49,7 +49,7 @@ namespace KolonyTools
         public static bool renderDisplay = false;
         public int activeTab = 0;
 
-        private string[] _tabLabels;
+        private static HelpWindow _helpWindow;
         private ManualLocalLogistics _localLogistics;
         private KolonyInventory _kolonyInventory;
         private OrbitalLogisticsGuiMain_Scenario _orbitalLogisticsGui;
@@ -87,6 +87,8 @@ namespace KolonyTools
         /// </summary>
         void Start()
         {
+            _helpWindow = new HelpWindow();
+
             // Hook into the ScenarioModule for Orbital Logistics
             var scenario = HighLogic.FindObjectOfType<ScenarioOrbitalLogistics>();
 
@@ -99,9 +101,22 @@ namespace KolonyTools
                 if (scenario != null)
                     _orbitalLogisticsGui = new OrbitalLogisticsGuiMain_Scenario(scenario);
             }
+        }
 
-            // Setup tab labels
-            _tabLabels = new[] { "Kolony Statistics", "Local Logistics", "Planetary Logistics", "Kolony Inventory", "Orbital Logistics" };
+        /// <summary>
+        /// Opens the help window on a topic, next to the window that asked for it.
+        /// </summary>
+        /// <param name="topic">Index into <see cref="HelpText.Topics"/>.</param>
+        /// <param name="nextTo">The screen rect of the calling window.</param>
+        public static void ShowHelp(int topic, Rect nextTo)
+        {
+            if (_helpWindow == null)
+                return;
+
+            if (!_helpWindow.IsVisible())
+                _helpWindow.MoveNextTo(nextTo);
+
+            _helpWindow.ShowTopic(topic);
         }
 
         private void InitStyles()
@@ -123,18 +138,23 @@ namespace KolonyTools
         {
             try
             {
-                if (!renderDisplay)
-                    return;
-
-                // Draw main window
-                _windowPosition = GUILayout.Window(12, _windowPosition, OnWindow, "Kolonization Dashboard", _windowStyle);
-
-                // Draw child windows
-                foreach (var window in _childWindows)
+                if (renderDisplay)
                 {
-                    if (window.IsVisible())
-                        window.DrawWindow();
+                    // Draw main window
+                    _windowPosition = GUILayout.Window(12, _windowPosition, OnWindow, "Kolonization Dashboard", _windowStyle);
+
+                    // Draw child windows
+                    foreach (var window in _childWindows)
+                    {
+                        if (window.IsVisible())
+                            window.DrawWindow();
+                    }
                 }
+
+                // The help window can also be opened from the Orbital Logistics part window,
+                //   so it is drawn whether the dashboard is open or not
+                if (_helpWindow != null && _helpWindow.IsVisible())
+                    _helpWindow.DrawWindow();
             }
             catch (Exception ex)
             {
@@ -151,7 +171,22 @@ namespace KolonyTools
 
             // Show UI navigation tabs
             GUILayout.BeginHorizontal();
-            activeTab = GUILayout.SelectionGrid(activeTab, _tabLabels, 6, _smButtonStyle);
+            var newActiveTab = GUILayout.SelectionGrid(activeTab, HelpText.TabLabels, 6, _smButtonStyle);
+            if (newActiveTab != activeTab)
+            {
+                // If the help window is open, keep it on the topic for the selected tab
+                activeTab = newActiveTab;
+                if (_helpWindow.IsVisible())
+                    _helpWindow.SelectTopic(HelpText.TopicForTab(activeTab));
+            }
+            if (GUILayout.Button(HelpText.HelpButton, _smButtonStyle, GUILayout.Width(24)))
+            {
+                var topic = HelpText.TopicForTab(activeTab);
+                if (_helpWindow.IsVisible() && _helpWindow.SelectedTopic == topic)
+                    _helpWindow.SetVisible(false);
+                else
+                    ShowHelp(topic, _windowPosition);
+            }
             GUILayout.EndHorizontal();
 
             // Show the UI for the currently selected tab
@@ -176,6 +211,8 @@ namespace KolonyTools
 
             GUILayout.EndVertical();
 
+            Tooltip.Draw(_windowPosition);
+
             // Make UI window draggable
             GUI.DragWindow();
         }
@@ -189,14 +226,17 @@ namespace KolonyTools
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label(String.Format("Body Name"), _labelStyle, GUILayout.Width(135));
-            GUILayout.Label(String.Format("Geology"), _labelStyle, GUILayout.Width(120));
-            GUILayout.Label(String.Format("Botany"), _labelStyle, GUILayout.Width(120));
-            GUILayout.Label(String.Format("Kolonization"), _labelStyle, GUILayout.Width(120));
+            GUILayout.Label(HelpText.StatsBody, _labelStyle, GUILayout.Width(135));
+            GUILayout.Label(HelpText.StatsGeology, _labelStyle, GUILayout.Width(120));
+            GUILayout.Label(HelpText.StatsBotany, _labelStyle, GUILayout.Width(120));
+            GUILayout.Label(HelpText.StatsKolonization, _labelStyle, GUILayout.Width(120));
             GUILayout.EndHorizontal();
 
             var focusedPlanet = GetFocusedPlanet();
-            var planetList = KolonizationManager.Instance.KolonizationInfo.Select(p => p.BodyIndex).Distinct().OrderByDescending(pId => pId == focusedPlanet);
+            var planetList = KolonizationManager.Instance.KolonizationInfo.Select(p => p.BodyIndex).Distinct().OrderByDescending(pId => pId == focusedPlanet).ToList();
+
+            if (planetList.Count == 0)
+                GUILayout.Label(HelpText.StatsEmpty, _labelStyle, GUILayout.Width(640));
 
             foreach (var p in planetList)
             {
@@ -210,8 +250,8 @@ namespace KolonyTools
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(String.Format("<color=#FFFFFF>{0}</color>", body.bodyName), _labelStyle, GUILayout.Width(135));
                 GUILayout.Label(String.Format("<color=#FFD900>{0:n3}% ({1})</color>", geo * 100d, geoBoost), _labelStyle, GUILayout.Width(120));
-                GUILayout.Label(String.Format("<color=#FFD900>{0:n3}% ({1})</color>", bot * 100d, kolBoost), _labelStyle, GUILayout.Width(120));
-                GUILayout.Label(String.Format("<color=#FFD900>{0:n3}% ({1})</color>", kol * 100d, botBoost), _labelStyle, GUILayout.Width(120));
+                GUILayout.Label(String.Format("<color=#FFD900>{0:n3}% ({1})</color>", bot * 100d, botBoost), _labelStyle, GUILayout.Width(120));
+                GUILayout.Label(String.Format("<color=#FFD900>{0:n3}% ({1})</color>", kol * 100d, kolBoost), _labelStyle, GUILayout.Width(120));
                 GUILayout.EndHorizontal();
             }
 
@@ -252,20 +292,23 @@ namespace KolonyTools
             try
             {
                 var focusedPlanet = GetFocusedPlanet();
-                var planetList = PlanetaryLogisticsManager.Instance.PlanetaryLogisticsInfo.Select(p => p.BodyIndex).Distinct().OrderByDescending(pId => pId == focusedPlanet);
+                var planetList = PlanetaryLogisticsManager.Instance.PlanetaryLogisticsInfo.Select(p => p.BodyIndex).Distinct().OrderByDescending(pId => pId == focusedPlanet).ToList();
+
+                if (planetList.Count == 0)
+                    GUILayout.Label(HelpText.PlanetaryEmpty, _labelStyle, GUILayout.Width(560));
 
                 foreach (var p in planetList)
                 {
                     var planet = FlightGlobals.Bodies[p];
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(String.Format("<color=#FFFFFF>{0}</color>", planet.bodyName), _labelStyle, GUILayout.Width(135));
+                    GUILayout.Label(new GUIContent(String.Format("<color=#FFFFFF>{0}</color>", planet.bodyName), HelpText.PlanetaryBodyTip), _labelStyle, GUILayout.Width(135));
                     GUILayout.EndHorizontal();
                     foreach (var log in PlanetaryLogisticsManager.Instance.PlanetaryLogisticsInfo.Where(x => x.BodyIndex == p).OrderBy(x => x.ResourceName))
                     {
                         GUILayout.BeginHorizontal();
                         GUILayout.Label("", _labelStyle, GUILayout.Width(30));
                         GUILayout.Label(log.ResourceName, _labelStyle, GUILayout.Width(120));
-                        GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", log.StoredQuantity), _labelStyle, GUILayout.Width(80));
+                        GUILayout.Label(new GUIContent(String.Format("<color=#FFD900>{0:n2}</color>", log.StoredQuantity), HelpText.PlanetaryAmountTip), _labelStyle, GUILayout.Width(80));
                         GUILayout.EndHorizontal();
                     }
                 }

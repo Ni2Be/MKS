@@ -38,13 +38,14 @@ namespace WOLF
         protected bool _isEditor = false;
         private GUIStyle _labelStyle;
         private WOLF_GuiFilters _filters;
+        private WOLF_GuiHelp _helpWindow;
         private WOLF_PlanningMonitor _planningMonitor;
         private WOLF_RouteMonitor _routeMonitor;
         private Vector2 _scrollPos = Vector2.zero;
         private GUIStyle _scrollStyle;
         private GUIStyle _smButtonStyle;
         private GUIStyle _closeButtonStyle;
-        private string[] _tabLabels;
+        private GUIContent[] _tabLabels;
         private Rect _windowPosition = new Rect(300, 60, 700, 460);
         private GUIStyle _windowStyle;
         private int _windowId;
@@ -101,13 +102,16 @@ namespace WOLF
             }
 
             // Setup tab labels
-            _tabLabels = new[] { "Depots", "Harvestable Resources", "Routes" };
+            _tabLabels = WOLF_HelpText.TabLabels;
             if (_isEditor)
-                _tabLabels = _tabLabels.Concat(new string[] { "Planner" }).ToArray();
+                _tabLabels = _tabLabels.Concat(new GUIContent[] { WOLF_HelpText.PlannerTabLabel }).ToArray();
 
             // Setup child windows
             if (!_childWindows.Contains(_routeMonitor.ManageTransfersGui))
                 _childWindows.Add(_routeMonitor.ManageTransfersGui);
+
+            _helpWindow = new WOLF_GuiHelp();
+            _childWindows.Add(_helpWindow);
 
             // Check for missing hoppers
             StartCoroutine(CheckForMissingHoppers());
@@ -244,6 +248,24 @@ namespace WOLF
                 // If a new tab was selected, hide the route transfer manager window
                 _routeMonitor.ManageTransfersGui.SetVisible(false);
                 activeTab = newActiveTab;
+
+                // If the help window is open, keep it on the topic for the selected tab
+                if (_helpWindow.IsVisible())
+                    _helpWindow.SelectTopic(WOLF_HelpText.TopicForTab(activeTab));
+            }
+            if (GUILayout.Button(WOLF_HelpText.HelpButton, _smButtonStyle, GUILayout.Width(24)))
+            {
+                var topic = WOLF_HelpText.TopicForTab(activeTab);
+                if (_helpWindow.IsVisible() && _helpWindow.SelectedTopic == topic)
+                {
+                    _helpWindow.SetVisible(false);
+                }
+                else
+                {
+                    if (!_helpWindow.IsVisible())
+                        _helpWindow.MoveNextTo(_windowPosition);
+                    _helpWindow.ShowTopic(topic);
+                }
             }
             GUILayout.EndHorizontal();
 
@@ -283,6 +305,10 @@ namespace WOLF
             GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
+
+            // No tooltips while a dropdown is open, they would show for the controls underneath its list
+            if (!_filters.IsDropdownOpen && !_planningMonitor.IsDropdownOpen)
+                Tooltip.Draw(_windowPosition);
 
             // Make UI window draggable
             GUI.DragWindow();
@@ -347,18 +373,18 @@ namespace WOLF
 
         private void ShowDepots()
         {
-            ShowResources(r => !IsHarvestableResource(r) && IsFilterMatch(r));
+            ShowResources(r => !IsHarvestableResource(r) && IsFilterMatch(r), WOLF_HelpText.Incoming, WOLF_HelpText.Outgoing, WOLF_HelpText.Available);
         }
 
         private void ShowHarvestableResources()
         {
-            ShowResources(IsHarvestableResource, "Abundance", "Harvested");
+            ShowResources(IsHarvestableResource, WOLF_HelpText.Abundance, WOLF_HelpText.Harvested, WOLF_HelpText.HarvestAvailable);
         }
 
         /// <summary>
         /// Displays the inner WOLF UI depot and harvestable windows
         /// </summary>
-        private void ShowResources(Func<IResourceStream, bool> resourceFilter, string incomingHeaderLabel = "Incoming", string outgoingHeaderLabel = "Outgoing", string availableHeaderLabel = "Available")
+        private void ShowResources(Func<IResourceStream, bool> resourceFilter, GUIContent incomingHeaderLabel, GUIContent outgoingHeaderLabel, GUIContent availableHeaderLabel)
         {
             _scrollPos = GUILayout.BeginScrollView(_scrollPos, _scrollStyle, GUILayout.Width(680), GUILayout.Height(760));
             GUILayout.BeginVertical();
@@ -367,7 +393,7 @@ namespace WOLF
             {
                 // Display column headers
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button(_displayAllToggle ? "-" : "+", UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
+                if (GUILayout.Button(_displayAllToggle ? WOLF_HelpText.CollapseAll : WOLF_HelpText.ExpandAll, UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
                 {
                     _displayAllToggle = !_displayAllToggle;
                     var depotKeys = _depotDisplayStatus.Keys.ToArray();
@@ -377,8 +403,8 @@ namespace WOLF
                         _depotDisplayStatus[key] = _displayAllToggle;
                     }
                 }
-                GUILayout.Label("Body/Biome", _labelStyle, GUILayout.Width(150));
-                GUILayout.Label("Resource", _labelStyle, GUILayout.Width(155));
+                GUILayout.Label(WOLF_HelpText.BodyBiome, _labelStyle, GUILayout.Width(150));
+                GUILayout.Label(WOLF_HelpText.Resource, _labelStyle, GUILayout.Width(155));
                 GUILayout.Label(incomingHeaderLabel, _labelStyle, GUILayout.Width(80));
                 GUILayout.Label(outgoingHeaderLabel, _labelStyle, GUILayout.Width(80));
                 GUILayout.Label(availableHeaderLabel, _labelStyle, GUILayout.Width(80));
@@ -423,7 +449,7 @@ namespace WOLF
                             {
                                 var visible = _depotDisplayStatus[depot];
                                 GUILayout.BeginHorizontal();
-                                if (GUILayout.Button(visible ? "-" : "+", UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
+                                if (GUILayout.Button(visible ? WOLF_HelpText.Collapse : WOLF_HelpText.Expand, UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
                                 {
                                     _depotDisplayStatus[depot] = !_depotDisplayStatus[depot];
                                     visible = _depotDisplayStatus[depot];

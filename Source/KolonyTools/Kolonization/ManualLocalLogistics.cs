@@ -133,7 +133,7 @@ namespace KolonyTools
             CheckVessels();
             if (!_crewPresent || _participatingVessels.Count < 2)
             {
-                GUILayout.Label(String.Format("No other vessels, or no crew present"), _labelStyle, GUILayout.Width(400));
+                GUILayout.Label(HelpText.LocalNoVessels, _labelStyle, GUILayout.Width(640));
                 return;
             }
 
@@ -143,18 +143,18 @@ namespace KolonyTools
             GUILayout.BeginHorizontal();
             GUILayout.Label(String.Format("[{0}] <color=#FFFFFF>{1}</color>", _fromVessel.Idx, _fromVessel.VesselName), _rightlabelStyle, GUILayout.Width(290));
             GUILayout.Label("", _labelStyle, GUILayout.Width(10));
-            if (GUILayout.Button("<", GUILayout.Width(20)))
+            if (GUILayout.Button(HelpText.LocalPrevLeft, GUILayout.Width(20)))
                 SetPrevVessel(_fromVessel);
-            if (GUILayout.Button(">", GUILayout.Width(20)))
+            if (GUILayout.Button(HelpText.LocalNextLeft, GUILayout.Width(20)))
                 SetNextVessel(_fromVessel);
 
 
             GUILayout.Label("", _labelStyle, GUILayout.Width(10));
 
 
-            if (GUILayout.Button("<", GUILayout.Width(20)))
+            if (GUILayout.Button(HelpText.LocalPrevRight, GUILayout.Width(20)))
                 SetPrevVessel(_toVessel);
-            if (GUILayout.Button(">", GUILayout.Width(20)))
+            if (GUILayout.Button(HelpText.LocalNextRight, GUILayout.Width(20)))
                 SetNextVessel(_toVessel);
             GUILayout.Label("", _labelStyle, GUILayout.Width(10));
             GUILayout.Label(String.Format("[{0}] <color=#f9d800>{1}</color>", _toVessel.Idx, _toVessel.VesselName), _labelStyle, GUILayout.Width(150));
@@ -163,7 +163,7 @@ namespace KolonyTools
             
             //Now our resources...
             if(_transferableResources.Count == 0)
-                GUILayout.Label("No transferrable resources present.", _labelStyle, GUILayout.Width(300));
+                GUILayout.Label(HelpText.LocalNoResources, _labelStyle, GUILayout.Width(640));
 
             UpdateResourceList();
             var i = 0;
@@ -173,20 +173,20 @@ namespace KolonyTools
                 var color = GetColor(i);
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(String.Format("<color=#{0}>{1}</color>",color,res.ResourceName), _labelStyle, GUILayout.Width(120));
-                GUILayout.Label(String.Format("<color=#{0}>{1:0.0}/{2:0.0}</color> <color=#FFFFFF>[{3:0.0}]</color>", color, res.FromAmount,res.FromMaxamount, res.FromMaxamount - res.FromAmount), _rightlabelStyle, GUILayout.Width(160));
+                GUILayout.Label(new GUIContent(String.Format("<color=#{0}>{1:0.0}/{2:0.0}</color> <color=#FFFFFF>[{3:0.0}]</color>", color, res.FromAmount,res.FromMaxamount, res.FromMaxamount - res.FromAmount), HelpText.LocalAmountTip), _rightlabelStyle, GUILayout.Width(160));
                 GUILayout.Label("", _labelStyle, GUILayout.Width(10));
-                if (GUILayout.Button("<", GUILayout.Width(20)))
+                if (GUILayout.Button(HelpText.LocalSlowLeft, GUILayout.Width(20)))
                     res.TransferAmount = res.FromMaxamount*-.001;
-                if (GUILayout.Button("<<", GUILayout.Width(30)))
+                if (GUILayout.Button(HelpText.LocalFastLeft, GUILayout.Width(30)))
                     res.TransferAmount = res.FromMaxamount*-.01;
-                if (GUILayout.Button("X", GUILayout.Width(30)))
+                if (GUILayout.Button(HelpText.LocalStop, GUILayout.Width(30)))
                     res.TransferAmount = 0;
-                if (GUILayout.Button(">>", GUILayout.Width(30)))
+                if (GUILayout.Button(HelpText.LocalFastRight, GUILayout.Width(30)))
                     res.TransferAmount = res.ToMaxamount * .01;
-                if (GUILayout.Button(">", GUILayout.Width(20)))
+                if (GUILayout.Button(HelpText.LocalSlowRight, GUILayout.Width(20)))
                     res.TransferAmount = res.ToMaxamount * .001;
                 GUILayout.Label("", _labelStyle, GUILayout.Width(10));
-                GUILayout.Label(String.Format("<color=#{0}>{1:0.0}/{2:0.0}</color> <color=#f9d800>[{3:0.0}]</color>", color, res.ToAmount, res.ToMaxamount, res.ToMaxamount - res.ToAmount), _labelStyle, GUILayout.Width(160));
+                GUILayout.Label(new GUIContent(String.Format("<color=#{0}>{1:0.0}/{2:0.0}</color> <color=#f9d800>[{3:0.0}]</color>", color, res.ToAmount, res.ToMaxamount, res.ToMaxamount - res.ToAmount), HelpText.LocalAmountTip), _labelStyle, GUILayout.Width(160));
                 GUILayout.EndHorizontal();
                 TransferResources(res);
             }

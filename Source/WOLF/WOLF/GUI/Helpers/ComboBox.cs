@@ -30,6 +30,11 @@ namespace WOLF
         private GUIStyle _listStyle;
         private bool _done;
 
+        /// <summary>
+        /// <c>true</c> while the list of items is being displayed.
+        /// </summary>
+        public bool IsOpen => _isClickedComboButton;
+
         public int SelectedItemIndex
         {
             get

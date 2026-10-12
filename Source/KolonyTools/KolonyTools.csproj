@@ -99,6 +99,9 @@
     <Compile Include="AC\EditACPrefabsSpaceCentre.cs" />
     <Compile Include="AddScenarioModules.cs" />
     <Compile Include="DeprecatedClasses.cs" />
+    <Compile Include="Help\HelpText.cs" />
+    <Compile Include="Help\HelpWindow.cs" />
+    <Compile Include="Help\Tooltip.cs" />
     <Compile Include="Kolonization\KolonizationConfig.cs" />
     <Compile Include="Kolonization\KolonizationSetup.cs" />
     <Compile Include="Kolonization\KolonyInventory.cs" />

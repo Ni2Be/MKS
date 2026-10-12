@@ -74,7 +74,7 @@ namespace KolonyTools
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Status:", UIHelper.whiteLabelStyle, GUILayout.MinWidth(100), GUILayout.MaxWidth(300));
+            GUILayout.Label(HelpText.ReviewStatus, UIHelper.whiteLabelStyle, GUILayout.MinWidth(100), GUILayout.MaxWidth(300));
             GUILayout.Label(Enum.GetName(typeof(DeliveryStatus), Transfer.Status),
                 UIHelper.yellowRightAlignLabelStyle, GUILayout.Width(100)
                 );
@@ -114,7 +114,7 @@ namespace KolonyTools
             float totalCost = Transfer.CalculateFuelUnits();
             float totalMass = Transfer.TotalMass();
 
-            GUILayout.Label("Transport Costs", UIHelper.labelStyle, GUILayout.Width(200));
+            GUILayout.Label(HelpText.ReviewCosts, UIHelper.labelStyle, GUILayout.Width(200));
             _costScrollPosition = GUILayout.BeginScrollView(
                 _costScrollPosition,
                 GUILayout.MinWidth(200), GUILayout.MaxWidth(400),
@@ -139,7 +139,7 @@ namespace KolonyTools
             GUILayout.BeginHorizontal();
             if (Transfer.Status == DeliveryStatus.Launched)
             {
-                if (GUILayout.Button("Abort", UIHelper.buttonStyle, GUILayout.Width(95)))
+                if (GUILayout.Button(HelpText.ReviewAbort, UIHelper.buttonStyle, GUILayout.Width(95)))
                 {
                     _parentWindow.AbortTransfer(_transfer);
                     SetVisible(false);
@@ -147,7 +147,7 @@ namespace KolonyTools
             }
             else if (Transfer.Status == DeliveryStatus.Returning)
             {
-                if (GUILayout.Button("Resume", UIHelper.buttonStyle, GUILayout.Width(95)))
+                if (GUILayout.Button(HelpText.ReviewResume, UIHelper.buttonStyle, GUILayout.Width(95)))
                 {
                     _parentWindow.ResumeTransfer(_transfer);
                     SetVisible(false);
@@ -155,7 +155,7 @@ namespace KolonyTools
             }
             else
             {
-                if (GUILayout.Button("Remove", UIHelper.buttonStyle, GUILayout.Width(95)))
+                if (GUILayout.Button(HelpText.ReviewRemove, UIHelper.buttonStyle, GUILayout.Width(95)))
                 {
                     _parentWindow.AbortTransfer(_transfer);
                     SetVisible(false);
@@ -168,6 +168,8 @@ namespace KolonyTools
             GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
+
+            Tooltip.Draw(_windowPos);
         }
     }
 }

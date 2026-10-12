@@ -132,7 +132,7 @@ namespace WOLF
         {
             // Route selection section
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Route", UIHelper.labelStyle, GUILayout.Width(80));
+            GUILayout.Label(WOLF_HelpText.TransferRoute, UIHelper.labelStyle, GUILayout.Width(80));
 
             if (_routes.Count < 1)
             {
@@ -152,7 +152,7 @@ namespace WOLF
             else
             {
                 // Display Previous button
-                if (GUILayout.Button(UIHelper.leftArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+                if (GUILayout.Button(WOLF_HelpText.TransferPrevious, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
                 {
                     SelectRoute(GetPreviousRouteIndex(_selectedRouteIndex));
                     _routeComboBox.SelectedItemIndex = _selectedRouteIndex;
@@ -162,7 +162,7 @@ namespace WOLF
                 _routeComboBox.Show();
 
                 // Display Next button
-                if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+                if (GUILayout.Button(WOLF_HelpText.TransferNext, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
                 {
                     SelectRoute(GetNextRouteIndex(_selectedRouteIndex));
                     _routeComboBox.SelectedItemIndex = _selectedRouteIndex;
@@ -184,8 +184,8 @@ namespace WOLF
                     // Table header
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(22));
-                    GUILayout.Label(" Resource", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                    GUILayout.Label("Available", UIHelper.whiteLabelStyle, GUILayout.MinWidth(150));
+                    GUILayout.Label(WOLF_HelpText.TransferResource, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                    GUILayout.Label(WOLF_HelpText.TransferAvailable, UIHelper.whiteLabelStyle, GUILayout.MinWidth(150));
                     GUILayout.EndHorizontal();
 
                     // Table rows
@@ -193,7 +193,7 @@ namespace WOLF
                     {
                         // Display the table row
                         GUILayout.BeginHorizontal();
-                        if (GUILayout.Button(UIHelper.downArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                        if (GUILayout.Button(WOLF_HelpText.TransferSelect, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                         {
                             _selectedResource = resource.ResourceName;
                         }
@@ -233,13 +233,13 @@ namespace WOLF
 
                     // Show origin available amount
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Origin:", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.TransferSelectedOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                     GUILayout.Label(originAvailable.ToString(), UIHelper.yellowLabelStyle, GUILayout.Width(120));
                     GUILayout.EndHorizontal();
 
                     // Show destination incoming and available amounts
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Destination:", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.TransferSelectedDestination, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                     GUILayout.Label(
                         string.Format("{0} / {1}", destinationAvailable, destinationIncoming),
                         UIHelper.yellowLabelStyle,
@@ -253,7 +253,7 @@ namespace WOLF
                     GUILayout.BeginVertical();
 
                     // Show transfer amount header
-                    GUILayout.Label("Transfer Amount", UIHelper.centerAlignLabelStyle, GUILayout.Width(165));
+                    GUILayout.Label(WOLF_HelpText.TransferAmount, UIHelper.centerAlignLabelStyle, GUILayout.Width(165));
 
                     // Show fill button and text input box
                     GUILayout.BeginHorizontal();
@@ -264,7 +264,7 @@ namespace WOLF
                     );
                     GUILayout.EndHorizontal();
 
-                    if (GUILayout.Button("Transfer", UIHelper.buttonStyle, GUILayout.Width(165)))
+                    if (GUILayout.Button(WOLF_HelpText.TransferButton, UIHelper.buttonStyle, GUILayout.Width(165)))
                     {
                         // Parse the transfer amount
                         if (int.TryParse(_transferAmountText, out int amount))
@@ -321,14 +321,14 @@ namespace WOLF
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(22));
                 GUILayout.Label(" Resource", UIHelper.whiteLabelStyle, GUILayout.MinWidth(155));
-                GUILayout.Label("Quantity", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                GUILayout.Label(WOLF_HelpText.TransferQuantity, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                 GUILayout.EndHorizontal();
 
                 // Transfer list items
                 foreach (var resource in _selectedRoute.GetResources())
                 {
                     GUILayout.BeginHorizontal();
-                    if (GUILayout.Button(UIHelper.deleteSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                    if (GUILayout.Button(WOLF_HelpText.TransferRemove, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                     {
                         var result = _selectedRoute.RemoveResource(resource.Key, resource.Value);
                         if (result is BrokenNegotiationResult)
@@ -353,12 +353,12 @@ namespace WOLF
                 GUILayout.EndScrollView();
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Available Payload:", UIHelper.whiteLabelStyle, GUILayout.Width(160));
+                GUILayout.Label(WOLF_HelpText.TransferAvailablePayload, UIHelper.whiteLabelStyle, GUILayout.Width(160));
                 GUILayout.Label(availablePayload.ToString(), UIHelper.yellowLabelStyle, GUILayout.Width(150));
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Total Payload:", UIHelper.whiteLabelStyle, GUILayout.Width(160));
+                GUILayout.Label(WOLF_HelpText.TransferTotalPayload, UIHelper.whiteLabelStyle, GUILayout.Width(160));
                 GUILayout.Label(_selectedRoute.Payload.ToString(), UIHelper.yellowLabelStyle, GUILayout.Width(150));
                 GUILayout.EndHorizontal();
 
@@ -373,6 +373,10 @@ namespace WOLF
 
                 // Display the contents of the combo boxes
                 _routeComboBox.ShowRest();
+
+                // No tooltips while the combo box is open, they would show for the controls underneath its list
+                if (!_routeComboBox.IsOpen)
+                    Tooltip.Draw(_windowPos);
             }
         }
 

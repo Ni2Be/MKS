@@ -101,16 +101,16 @@ namespace KolonyTools
         {
             // Origin vessel section header
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Origin", UIHelper.labelStyle, GUILayout.Width(80));
+            GUILayout.Label(HelpText.CreateOrigin, UIHelper.labelStyle, GUILayout.Width(80));
             GUILayout.Label(_module.vessel.vesselName, UIHelper.whiteLabelStyle);
             GUILayout.EndHorizontal();  // origin vessel section
 
             // Destination vessel selection section
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Destination", UIHelper.labelStyle, GUILayout.Width(80));
+            GUILayout.Label(HelpText.CreateDestination, UIHelper.labelStyle, GUILayout.Width(80));
 
             // Display Previous button for destination vessel selection
-            if (GUILayout.Button(UIHelper.leftArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+            if (GUILayout.Button(HelpText.CreatePrevVessel, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
             {
                 UpdateDestinationVessel(GetPreviousVesselIndex(_destinationVesselIndex));
                 _destinationVesselComboBox.SelectedItemIndex = _destinationVesselIndex;
@@ -120,7 +120,7 @@ namespace KolonyTools
             _destinationVesselComboBox.Show();
 
             // Display Next button destination vessel selection
-            if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+            if (GUILayout.Button(HelpText.CreateNextVessel, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
             {
                 UpdateDestinationVessel(GetNextVesselIndex(_destinationVesselIndex));
                 _destinationVesselComboBox.SelectedItemIndex = _destinationVesselIndex;
@@ -149,8 +149,8 @@ namespace KolonyTools
                     // Table header
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(22));
-                    GUILayout.Label(" Resource", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                    GUILayout.Label("Available", UIHelper.whiteLabelStyle, GUILayout.MinWidth(150));
+                    GUILayout.Label(HelpText.CreateResource, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                    GUILayout.Label(HelpText.CreateAvailable, UIHelper.whiteLabelStyle, GUILayout.MinWidth(150));
                     GUILayout.EndHorizontal();
 
                     // Table rows
@@ -168,7 +168,7 @@ namespace KolonyTools
 
                             // Display the table row
                             GUILayout.BeginHorizontal();
-                            if (GUILayout.Button(UIHelper.downArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                            if (GUILayout.Button(HelpText.CreateSelect, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                             {
                                 _selectedResource = resource.ResourceDefinition;
                             }
@@ -209,13 +209,13 @@ namespace KolonyTools
 
                     // Show origin amount
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Origin:", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(HelpText.CreateSelectedOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                     GUILayout.Label(sourceAvailabe.ToString("F1"), UIHelper.yellowLabelStyle, GUILayout.Width(120));
                     GUILayout.EndHorizontal();
 
                     // Show destination amount and capacity
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Destination:", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(HelpText.CreateSelectedDestination, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                     GUILayout.Label(
                         string.Format("{0:F1} / {1:F0}", destinationAvailable, destinationCapacity),
                         UIHelper.yellowLabelStyle,
@@ -233,7 +233,7 @@ namespace KolonyTools
 
                     // Show fill button and text input box
                     GUILayout.BeginHorizontal();
-                    if (GUILayout.Button("Fill", UIHelper.buttonStyle, GUILayout.Width(65), GUILayout.Height(25)))
+                    if (GUILayout.Button(HelpText.CreateFill, UIHelper.buttonStyle, GUILayout.Width(65), GUILayout.Height(25)))
                     {
                         // Determine the amount needed fill the destination vessel with the selected resource
                         double difference = destinationCapacity - destinationAvailable;
@@ -251,7 +251,7 @@ namespace KolonyTools
                     );
                     GUILayout.EndHorizontal();
 
-                    if (GUILayout.Button("Add to Transfer", UIHelper.buttonStyle, GUILayout.Width(165)))
+                    if (GUILayout.Button(HelpText.CreateAdd, UIHelper.buttonStyle, GUILayout.Width(165)))
                     {
                         // Parse the transfer amount
                         double amount = 0;
@@ -290,15 +290,15 @@ namespace KolonyTools
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(22));
                     GUILayout.Label(" Resource", UIHelper.whiteLabelStyle, GUILayout.MinWidth(155));
-                    GUILayout.Label("Quantity", UIHelper.whiteLabelStyle, GUILayout.Width(80));
-                    GUILayout.Label("Cost", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(HelpText.CreateQuantity, UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                    GUILayout.Label(HelpText.CreateCost, UIHelper.whiteLabelStyle, GUILayout.Width(80));
                     GUILayout.EndHorizontal();
 
                     // Transfer list items
                     foreach (var item in _transfer.ResourceRequests.ToArray())
                     {
                         GUILayout.BeginHorizontal();
-                        if (GUILayout.Button(UIHelper.deleteSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                        if (GUILayout.Button(HelpText.CreateRemove, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                         {
                             _transfer.ResourceRequests.Remove(item);
 
@@ -314,7 +314,7 @@ namespace KolonyTools
                     GUILayout.EndScrollView();
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Total Mass:", UIHelper.whiteLabelStyle, GUILayout.Width(90));
+                    GUILayout.Label(HelpText.CreateTotalMass, UIHelper.whiteLabelStyle, GUILayout.Width(90));
                     GUILayout.Label(totalMass.ToString("F2"), UIHelper.yellowLabelStyle, GUILayout.Width(150));
                     GUILayout.EndHorizontal();
 
@@ -322,7 +322,7 @@ namespace KolonyTools
                     var costLabelStyle = _originVessel.CanAffordTransport(totalCost)
                         ? UIHelper.yellowLabelStyle
                         : UIHelper.redLabelStyle;
-                    GUILayout.Label("Total Cost:", UIHelper.whiteLabelStyle, GUILayout.Width(90));
+                    GUILayout.Label(HelpText.CreateTotalCost, UIHelper.whiteLabelStyle, GUILayout.Width(90));
                     GUILayout.Label(
                         string.Format("{0:F2} / {1:F0}", totalCost, _originVessel.GetTransportCapacity()),
                         costLabelStyle, GUILayout.Width(150)
@@ -330,7 +330,7 @@ namespace KolonyTools
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Transit Time:", UIHelper.whiteLabelStyle, GUILayout.Width(90));
+                    GUILayout.Label(HelpText.CreateTransitTime, UIHelper.whiteLabelStyle, GUILayout.Width(90));
                     GUILayout.Label(
                         Utilities.SecondsToKerbinTime(_transfer.Duration),
                         UIHelper.yellowLabelStyle, GUILayout.Width(150)
@@ -350,7 +350,7 @@ namespace KolonyTools
             }
             else 
             {
-                if (GUILayout.Button("Start Transfer", UIHelper.buttonStyle, GUILayout.Width(110)))
+                if (GUILayout.Button(HelpText.CreateStart, UIHelper.buttonStyle, GUILayout.Width(110)))
                 {
                     if (GameSettings.VERBOSE_DEBUG_LOG)
                         Debug.Log("[MKS] OrbitalLogisiticsTransferCreateView.DrawWindowContents: Start Transfer button pressed.");
@@ -369,6 +369,10 @@ namespace KolonyTools
 
             // Display the contents of the combo boxes
             _destinationVesselComboBox.ShowRest();
+
+            // No tooltips while the combo box is open, they would show for the controls underneath its list
+            if (!_destinationVesselComboBox.IsOpen)
+                Tooltip.Draw(_windowPos);
         }
 
         /// <summary>

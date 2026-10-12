@@ -35,7 +35,7 @@ namespace WOLF
                 // Display manage transfers button
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(520));
-                if (GUILayout.Button("Manage Transfers", UIHelper.buttonStyle, GUILayout.Width(120)))
+                if (GUILayout.Button(WOLF_HelpText.ManageTransfers, UIHelper.buttonStyle, GUILayout.Width(120)))
                 {
                     ToggleTransfersWindow();
                 }
@@ -43,7 +43,7 @@ namespace WOLF
 
                 // Display column headers
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button(_displayAllToggle ? "-" : "+", UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
+                if (GUILayout.Button(_displayAllToggle ? WOLF_HelpText.CollapseAll : WOLF_HelpText.ExpandAll, UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
                 {
                     _displayAllToggle = !_displayAllToggle;
                     var depotKeys = _routeDisplayStatus.Keys.ToArray();
@@ -53,11 +53,11 @@ namespace WOLF
                         _routeDisplayStatus[key] = _displayAllToggle;
                     }
                 }
-                GUILayout.Label("Origin", _labelStyle, GUILayout.Width(150));
-                GUILayout.Label("Destination", _labelStyle, GUILayout.Width(150));
-                GUILayout.Label("Cargo Space", _labelStyle, GUILayout.Width(90));
-                GUILayout.Label("Resource", _labelStyle, GUILayout.Width(160));
-                GUILayout.Label("Quantity", _labelStyle, GUILayout.Width(70));
+                GUILayout.Label(WOLF_HelpText.RouteOrigin, _labelStyle, GUILayout.Width(150));
+                GUILayout.Label(WOLF_HelpText.RouteDestination, _labelStyle, GUILayout.Width(150));
+                GUILayout.Label(WOLF_HelpText.RouteCargoSpace, _labelStyle, GUILayout.Width(90));
+                GUILayout.Label(WOLF_HelpText.RouteResource, _labelStyle, GUILayout.Width(160));
+                GUILayout.Label(WOLF_HelpText.RouteQuantity, _labelStyle, GUILayout.Width(70));
                 GUILayout.EndHorizontal();
 
                 var routes = _routeRegistry.GetRoutes();
@@ -79,7 +79,7 @@ namespace WOLF
                         var visible = _routeDisplayStatus[route];
 
                         GUILayout.BeginHorizontal();
-                        if (GUILayout.Button(visible ? "-" : "+", UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
+                        if (GUILayout.Button(visible ? WOLF_HelpText.Collapse : WOLF_HelpText.Expand, UIHelper.buttonStyle, GUILayout.Width(20), GUILayout.Height(20)))
                         {
                             _routeDisplayStatus[route] = !_routeDisplayStatus[route];
                             visible = _routeDisplayStatus[route];

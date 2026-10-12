@@ -76,6 +76,15 @@ namespace KolonyTools
         private string boxStyle;
         private GUIStyle listStyle;
         bool done;
+
+        /// <summary>
+        /// <c>true</c> while the list of items is being displayed.
+        /// </summary>
+        public bool IsOpen
+        {
+            get { return isClickedComboButton; }
+        }
+
         public ComboBox(Rect rect, GUIContent buttonContent, GUIContent[] listContent, GUIStyle listStyle, Action<int> onChange = null)
         {
             OnChange = onChange;

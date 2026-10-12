@@ -22,6 +22,11 @@ namespace WOLF
 
         public bool HasDepots => !(_depots == null || _depots.Count < 1);
 
+        /// <summary>
+        /// <c>true</c> while the depot dropdown list is being displayed.
+        /// </summary>
+        public bool IsDropdownOpen => _depotDropdown != null && _depotDropdown.IsOpen;
+
         public WOLF_PlanningMonitor(IRegistryCollection depotRegistry)
         {
             _depotRegistry = depotRegistry;
@@ -103,10 +108,10 @@ namespace WOLF
 
                 // Show depot selection section
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Depot", UIHelper.labelStyle, GUILayout.Width(80));
+                GUILayout.Label(WOLF_HelpText.PlannerDepot, UIHelper.labelStyle, GUILayout.Width(80));
 
                 // Display Previous button
-                if (GUILayout.Button(UIHelper.leftArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+                if (GUILayout.Button(WOLF_HelpText.PlannerPrevious, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
                 {
                     SelectPreviousDepot();
                     _depotDropdown.SelectedItemIndex = _selectedDepotIndex;
@@ -116,7 +121,7 @@ namespace WOLF
                 _depotDropdown.Show();
 
                 // Display Next button
-                if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
+                if (GUILayout.Button(WOLF_HelpText.PlannerNext, UIHelper.buttonStyle, GUILayout.Width(30), GUILayout.Height(20)))
                 {
                     SelectNextDepot();
                     _depotDropdown.SelectedItemIndex = _selectedDepotIndex;
@@ -165,10 +170,10 @@ namespace WOLF
 
                     // Show resource section header
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Resource", UIHelper.labelStyle, GUILayout.Width(155));
-                    GUILayout.Label("Incoming", UIHelper.labelStyle, GUILayout.Width(80));
-                    GUILayout.Label("Outgoing", UIHelper.labelStyle, GUILayout.Width(80));
-                    GUILayout.Label("Available", UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerResource, UIHelper.labelStyle, GUILayout.Width(155));
+                    GUILayout.Label(WOLF_HelpText.PlannerIncoming, UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerOutgoing, UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerAvailable, UIHelper.labelStyle, GUILayout.Width(80));
                     GUILayout.EndHorizontal();
 
                     // Show how recipe affects resources at the selected depot
@@ -223,10 +228,10 @@ namespace WOLF
 
                     // Show resource section header
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Harvestable Resource", UIHelper.labelStyle, GUILayout.Width(155));
-                    GUILayout.Label("Abundance", UIHelper.labelStyle, GUILayout.Width(80));
-                    GUILayout.Label("Harvested", UIHelper.labelStyle, GUILayout.Width(80));
-                    GUILayout.Label("Available", UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerHarvestable, UIHelper.labelStyle, GUILayout.Width(155));
+                    GUILayout.Label(WOLF_HelpText.PlannerAbundance, UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerHarvested, UIHelper.labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(WOLF_HelpText.PlannerHarvestAvailable, UIHelper.labelStyle, GUILayout.Width(80));
                     GUILayout.EndHorizontal();
 
                     // Show how recipe affects harevestable resources at the selected depot

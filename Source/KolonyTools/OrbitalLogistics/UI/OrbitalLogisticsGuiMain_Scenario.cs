@@ -49,7 +49,7 @@ namespace KolonyTools
 
             // Display pending transfer section header
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Pending Transfers", UIHelper.labelStyle, GUILayout.Width(200));
+            GUILayout.Label(HelpText.OrbLogPending, UIHelper.labelStyle, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginVertical();
@@ -65,11 +65,11 @@ namespace KolonyTools
                 // Display pending transfer column headers
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(25));
-                GUILayout.Label(" Origin", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                GUILayout.Label("Destination", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                GUILayout.Label("Cost", UIHelper.whiteLabelStyle, GUILayout.Width(80));
-                GUILayout.Label("Mass", UIHelper.whiteLabelStyle, GUILayout.Width(80));
-                GUILayout.Label("Arrival Time", UIHelper.whiteLabelStyle, GUILayout.Width(90));
+                GUILayout.Label(HelpText.OrbLogOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                GUILayout.Label(HelpText.OrbLogDestination, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                GUILayout.Label(HelpText.OrbLogCost, UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                GUILayout.Label(HelpText.OrbLogMass, UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                GUILayout.Label(HelpText.OrbLogArrival, UIHelper.whiteLabelStyle, GUILayout.Width(90));
                 GUILayout.EndHorizontal();
 
                 // Display pending transfers
@@ -88,7 +88,7 @@ namespace KolonyTools
                     }
 
                     GUILayout.BeginHorizontal();
-                    if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
+                    if (GUILayout.Button(HelpText.OrbLogDetails, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
                     {
                         _selectedTransfer = transfer;
 
@@ -107,7 +107,7 @@ namespace KolonyTools
                         Utilities.FormatTime(transfer.GetArrivalTime() - Planetarium.GetUniversalTime()),
                         labelStyle, GUILayout.Width(90)
                     );
-                    if (GUILayout.Button(UIHelper.deleteSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                    if (GUILayout.Button(HelpText.OrbLogAbort, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                     {
                         _selectedTransfer = null;
 
@@ -133,7 +133,7 @@ namespace KolonyTools
 
             // Display expired transfer section header
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Expired Transfers", UIHelper.labelStyle, GUILayout.Width(200));
+            GUILayout.Label(HelpText.OrbLogExpired, UIHelper.labelStyle, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginVertical();
@@ -149,11 +149,11 @@ namespace KolonyTools
                 // Display expired transfer column headers
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(25));
-                GUILayout.Label(" Origin", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                GUILayout.Label("Destination", UIHelper.whiteLabelStyle, GUILayout.Width(165));
-                GUILayout.Label("Cost", UIHelper.whiteLabelStyle, GUILayout.Width(80));
-                GUILayout.Label("Mass", UIHelper.whiteLabelStyle, GUILayout.Width(80));
-                GUILayout.Label("Status", UIHelper.whiteLabelStyle, GUILayout.Width(90));
+                GUILayout.Label(HelpText.OrbLogOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                GUILayout.Label(HelpText.OrbLogDestination, UIHelper.whiteLabelStyle, GUILayout.Width(165));
+                GUILayout.Label(HelpText.OrbLogCost, UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                GUILayout.Label(HelpText.OrbLogMass, UIHelper.whiteLabelStyle, GUILayout.Width(80));
+                GUILayout.Label(HelpText.OrbLogStatus, UIHelper.whiteLabelStyle, GUILayout.Width(90));
                 GUILayout.EndHorizontal();
 
                 // Diplay expired transfers
@@ -172,7 +172,7 @@ namespace KolonyTools
                     }
 
                     GUILayout.BeginHorizontal();
-                    if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
+                    if (GUILayout.Button(HelpText.OrbLogDetails, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
                     {
                         _selectedTransfer = transfer;
 
@@ -188,7 +188,7 @@ namespace KolonyTools
                     GUILayout.Label(transfer.CalculateFuelUnits().ToString("F2"), labelStyle, GUILayout.Width(80));
                     GUILayout.Label(transfer.TotalMass().ToString("F2"), labelStyle, GUILayout.Width(80));
                     GUILayout.Label(transfer.Status.ToString(), labelStyle, GUILayout.Width(90));
-                    if (GUILayout.Button(UIHelper.deleteSymbol, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
+                    if (GUILayout.Button(HelpText.OrbLogRemove, UIHelper.buttonStyle, GUILayout.Width(22), GUILayout.Height(22)))
                     {
                         _selectedTransfer = null;
 
@@ -212,7 +212,7 @@ namespace KolonyTools
                 // Display clear all expired transfers button
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(300));
-                if (GUILayout.Button("Clear All", UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(25)))
+                if (GUILayout.Button(HelpText.OrbLogClearAll, UIHelper.buttonStyle, GUILayout.Width(80), GUILayout.Height(25)))
                 {
                     _selectedTransfer = null;
 

@@ -44,15 +44,15 @@ namespace KolonyTools
             GUILayout.BeginVertical();
 
             // Display pending transfers section header
-            GUILayout.Label("Pending Transfers", UIHelper.labelStyle, GUILayout.Width(200));
+            GUILayout.Label(HelpText.OrbLogPending, UIHelper.labelStyle, GUILayout.Width(200));
             _scrollPositionCurrentTransfers = GUILayout.BeginScrollView(_scrollPositionCurrentTransfers);
 
             // Display pending transfers column headers
             GUILayout.BeginHorizontal();
             GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(25));
-            GUILayout.Label(" Origin", UIHelper.whiteLabelStyle, GUILayout.Width(155));
-            GUILayout.Label("Destination", UIHelper.whiteLabelStyle, GUILayout.Width(155));
-            GUILayout.Label("Arrival Time", UIHelper.whiteRightAlignLabelStyle, GUILayout.Width(80));
+            GUILayout.Label(HelpText.OrbLogOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(155));
+            GUILayout.Label(HelpText.OrbLogDestination, UIHelper.whiteLabelStyle, GUILayout.Width(155));
+            GUILayout.Label(HelpText.OrbLogArrival, UIHelper.whiteRightAlignLabelStyle, GUILayout.Width(80));
             GUILayout.EndHorizontal();
 
             // Display pending transfers
@@ -78,7 +78,7 @@ namespace KolonyTools
                 }
 
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
+                if (GUILayout.Button(HelpText.OrbLogDetails, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
                 {
                     if (ReviewTransferGui == null)
                         ReviewTransferGui = new OrbitalLogisticsGui_ReviewTransfer(transfer, this);
@@ -98,15 +98,15 @@ namespace KolonyTools
             GUILayout.EndScrollView();
 
             // Display expired transfers section header
-            GUILayout.Label("Expired Tranfers", UIHelper.labelStyle, GUILayout.Width(200));
+            GUILayout.Label(HelpText.OrbLogExpired, UIHelper.labelStyle, GUILayout.Width(200));
             _scrollPositionPreviousTransfers = GUILayout.BeginScrollView(_scrollPositionPreviousTransfers);
 
             // Display expired transfers column headers
             GUILayout.BeginHorizontal();
             GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(25));
-            GUILayout.Label(" Origin", UIHelper.whiteLabelStyle, GUILayout.Width(155));
-            GUILayout.Label("Destination", UIHelper.whiteLabelStyle, GUILayout.Width(155));
-            GUILayout.Label("Status", UIHelper.whiteLabelStyle, GUILayout.Width(80));
+            GUILayout.Label(HelpText.OrbLogOrigin, UIHelper.whiteLabelStyle, GUILayout.Width(155));
+            GUILayout.Label(HelpText.OrbLogDestination, UIHelper.whiteLabelStyle, GUILayout.Width(155));
+            GUILayout.Label(HelpText.OrbLogStatus, UIHelper.whiteLabelStyle, GUILayout.Width(80));
             GUILayout.EndHorizontal();
 
             // Display expired transfers
@@ -130,7 +130,7 @@ namespace KolonyTools
                 }
 
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button(UIHelper.rightArrowSymbol, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
+                if (GUILayout.Button(HelpText.OrbLogDetails, UIHelper.buttonStyle, GUILayout.Width(25), GUILayout.Height(22)))
                 {
                     if (ReviewTransferGui == null)
                         ReviewTransferGui = new OrbitalLogisticsGui_ReviewTransfer(transfer, this);
@@ -148,7 +148,7 @@ namespace KolonyTools
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(string.Empty, UIHelper.labelStyle, GUILayout.Width(100));
-            if (GUILayout.Button("New Transfer", UIHelper.buttonStyle, GUILayout.Width(120)))
+            if (GUILayout.Button(HelpText.OrbLogNewTransfer, UIHelper.buttonStyle, GUILayout.Width(120)))
             {
                 _module.MakeBodyVesselList();
 
@@ -158,9 +158,15 @@ namespace KolonyTools
             {
                 SetVisible(false);
             }
+            if (GUILayout.Button(HelpText.OrbLogHelp, UIHelper.buttonStyle, GUILayout.Width(25)))
+            {
+                KolonizationMonitor.ShowHelp(HelpText.TOPIC_ORBITAL_LOGISTICS, _windowPos);
+            }
             GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
+
+            Tooltip.Draw(_windowPos);
         }
 
         /// <summary>

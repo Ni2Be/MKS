@@ -183,10 +183,10 @@ namespace KolonyTools
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("<color=#FFFFFF>Resource</color>", _labelStyle, GUILayout.Width(180));
-            GUILayout.Label("<color=#FFFFFF>Inventory</color>", _labelStyle, GUILayout.Width(190));
-            GUILayout.Label("<color=#FFFFFF>Rate</color>", _labelStyle, GUILayout.Width(80));
-            GUILayout.Label("<color=#FFFFFF>Supply</color>", _labelStyle, GUILayout.Width(150));
+            GUILayout.Label(HelpText.InventoryResource, _labelStyle, GUILayout.Width(180));
+            GUILayout.Label(HelpText.InventoryAmount, _labelStyle, GUILayout.Width(190));
+            GUILayout.Label(HelpText.InventoryRate, _labelStyle, GUILayout.Width(80));
+            GUILayout.Label(HelpText.InventorySupply, _labelStyle, GUILayout.Width(150));
             GUILayout.EndHorizontal();
 
             var count = _resourceList.Count;
