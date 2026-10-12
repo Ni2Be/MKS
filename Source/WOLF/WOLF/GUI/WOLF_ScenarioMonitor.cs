@@ -284,7 +284,7 @@ namespace WOLF
                     break;
                 case 2:
                     _filters.Draw(true);
-                    _scrollPos = _routeMonitor.DrawWindow(_scrollPos);
+                    _scrollPos = _routeMonitor.DrawWindow(_scrollPos, _filters);
                     break;
                 case 3:
                     _planningMonitor.RefreshCache();

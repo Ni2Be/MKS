@@ -184,8 +184,9 @@ namespace WOLF
         public static readonly GUIContent HarvestAvailable = new GUIContent("Available", "What is left for more harvesters.");
 
         // Filters
-        public const string FilterOriginTip = "Show only the depots on this body, and optionally in one biome.";
-        public const string FilterDestinationTip = "Destination body and biome.";
+        public const string FilterOriginTip =
+            "Show only the depots on this body, and optionally in one biome. On the Routes tab: only the routes that start there.";
+        public const string FilterDestinationTip = "Show only the routes that end on this body, and optionally in one biome.";
         public const string FilterRawTip = "Show or hide raw resources, such as Ore, Water and Minerals.";
         public const string FilterRefinedTip = "Show or hide refined resources, such as Metals, Chemicals and Fuel.";
         public const string FilterAssembledTip = "Show or hide assembled resources, such as MaterialKits, Machinery and TransportCredits.";

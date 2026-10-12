@@ -87,8 +87,8 @@ namespace KolonyTools
                             if (thisRes.ResourceName == res.resourceName)
                             {
                                 found = true;
-                                thisRes.CurrentAmount = +res.amount;
-                                thisRes.CurrentMax = +res.maxAmount;
+                                thisRes.CurrentAmount += res.amount;
+                                thisRes.CurrentMax += res.maxAmount;
                                 break;
                             }
                         }
@@ -149,7 +149,7 @@ namespace KolonyTools
             {
                 var res = _resourceList[r];
                 var found = false;
-                for (int w = 0; r < _workList.Count; w++)
+                for (int w = 0; w < _workList.Count; w++)
                 {
                     var wRes = _workList[w];
                     if (wRes.ResourceName == res.ResourceName)

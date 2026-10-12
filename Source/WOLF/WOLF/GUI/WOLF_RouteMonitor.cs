@@ -25,7 +25,15 @@ namespace WOLF
             ManageTransfersGui = new WOLF_GuiManageTransfers(routeRegistry);
         }
 
-        public Vector2 DrawWindow(Vector2 scrollPosition)
+        private static bool IsFilterMatch(IRoute route, WOLF_GuiFilters filters)
+        {
+            return (string.IsNullOrEmpty(filters.SelectedOriginDepotBody) || route.OriginBody == filters.SelectedOriginDepotBody)
+                && (string.IsNullOrEmpty(filters.SelectedOriginDepotBiome) || route.OriginBiome == filters.SelectedOriginDepotBiome)
+                && (string.IsNullOrEmpty(filters.SelectedDestinationDepotBody) || route.DestinationBody == filters.SelectedDestinationDepotBody)
+                && (string.IsNullOrEmpty(filters.SelectedDestinationDepotBiome) || route.DestinationBiome == filters.SelectedDestinationDepotBiome);
+        }
+
+        public Vector2 DrawWindow(Vector2 scrollPosition, WOLF_GuiFilters filters)
         {
             var newScrollPosition = GUILayout.BeginScrollView(scrollPosition, _scrollStyle, GUILayout.Width(680), GUILayout.Height(760));
             GUILayout.BeginVertical();
@@ -64,6 +72,7 @@ namespace WOLF
                 if (routes != null && routes.Count > 0)
                 {
                     var orderedRoutes = routes
+                        .Where(r => IsFilterMatch(r, filters))
                         .OrderBy(r => r.OriginBody)
                             .ThenBy(r => r.OriginBiome)
                             .ThenBy(r => r.DestinationBody)
